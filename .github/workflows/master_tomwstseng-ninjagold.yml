@@ -31,4 +31,4 @@ jobs:
       with:
         app-name: 'tomwstseng-ninjagold'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_aec401a897054672ba9634ed79878228 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_dce101287d914c99bc643a759d07770c }}
