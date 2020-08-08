@@ -32,4 +32,7 @@ def handle_post(request):
         add_gold(request,"house", 2, 5)
     elif action == "casino":
         add_gold(request,"casino", -50, 50)
-    return redirect("/")
+    return redirect("/gold")
+
+def times_table(request):
+    return render(request, 'super_times_table.html')
