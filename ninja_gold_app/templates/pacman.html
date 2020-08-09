@@ -138,7 +138,6 @@
             pacmanY : blockSize * 10,
             pacmanDirection : 'right',
             pacmanLastDirection : 'right',
-        
         }
 
         function borderRadius(row, col) {
@@ -194,6 +193,44 @@
                     break;
             }
         }
+        $(".container").click((e) => {
+            pacManPos = document.getElementById("pacman").getBoundingClientRect();
+            diffX = e.clientX - pacManPos.left;
+            diffY = e.clientY - pacManPos.top;
+            if (diffX < 0) { // left of PacMan
+                if (diffY < 0) { // up + left
+                    if (diffY < diffX) {
+                        gameState.pacmanDirection = 'up';
+                    }
+                    else {
+                        gameState.pacmanDirection = 'left';
+                    }
+                } else { // down + left
+                    if (-diffY < diffX) {
+                        gameState.pacmanDirection = 'down';
+                    }
+                    else {
+                        gameState.pacmanDirection = 'left';
+                    }
+                }
+            } else { // right of PacMan
+                if (diffY < 0) { // up + right
+                    if (Math.abs(diffY) > Math.abs(diffX)) {
+                        gameState.pacmanDirection = 'up';
+                    }
+                    else {
+                        gameState.pacmanDirection = 'right';
+                    }
+                } else { // down + right
+                    if (Math.abs(diffY) > Math.abs(diffX)) {
+                        gameState.pacmanDirection = 'down';
+                    }
+                    else {
+                        gameState.pacmanDirection = 'right';
+                    }    
+                }
+            }
+        });
         function pacmanWorldPos() {
             var row = Math.floor(gameState.pacmanY / blockSize);
             var col = Math.floor(gameState.pacmanX / blockSize);
