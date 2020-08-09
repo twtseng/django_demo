@@ -12,17 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pacman demo</title>
     <style type="text/css">
-        :root {
-             /*
-            --block-size: 50px;
-            --brick-size: 40px;
-            --coin-size: 10px;
-            */
-            --block-size: 2.5em;
-            --brick-size: 2.5em;
-            --coin-size: .5em;
-           
-        }
         * {
             padding:0;
             margin:0;
@@ -34,27 +23,25 @@
             display: flex;
         }
         div.row div {
-            width: var(--block-size);
-            height: var(--block-size);
+            width: 50px;
+            height: 50px;
             display: inline-block;
         }
         div.brick {
             background-color: teal;
-            width: var(--brick-size);
-            height: var(--brick-size);
+            width: 40px;
+            height: 40px;
         }
         div.coin {
             background-image: url("{% static 'images/coin.png' %}");
-           /* background-image: url("../static/images/coin.png"); */
             background-position: center;
             background-repeat: no-repeat;
-            background-size: var(--coin-size) var(--coin-size);
+            background-size: 10px 10px;
         }
         div#pacman {
-            width: var(--block-size);
-            height: var(--block-size);
+            width: 50px;
+            height: 50px;
             background-image: url("{% static 'images/pacman.gif' %}");
-           /* background-image: url("../static/images/pacman.gif"); */
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
@@ -129,37 +116,32 @@
             1 : "coin",
             2 : "brick"
         }
-        const blockSize = 25;
-        const blockMoveSteps = 5;
-        const blockStepSize = blockSize / blockMoveSteps; // Please make sure blockSize is evenly divisible by blockMoveSteps
-        const borderRadiusSize = "20%"
         var gameState = {
-            pacmanX : blockSize * 8,
-            pacmanY : blockSize * 10,
+            pacmanX : 400,
+            pacmanY : 500,
             pacmanDirection : 'right',
-            pacmanLastDirection : 'right',
-        
+            pacmanLastDirection : 'right'
         }
 
         function borderRadius(row, col) {
             var radiusValue = "border-radius:";
             if (row>0 && col>0 && world[row][col-1]!=2 && world[row-1][col-1]!=2 && world[row-1][col]!=2) {
-                radiusValue += ` ${borderRadiusSize}`
+                radiusValue += " 10px"
             } else {
                 radiusValue += " 0px"
             }
             if (row>0 && col<world[0].length-1 && world[row-1][col]!=2 && world[row-1][col+1]!=2 && world[row][col+1]!=2) {
-                radiusValue += ` ${borderRadiusSize}`
+                radiusValue += " 10px"
             } else {
                 radiusValue += " 0px"
             }
             if (row<world.length-1 && col<world[0].length-1 && world[row][col+1]!=2 && world[row+1][col+1]!=2 && world[row+1][col]!=2) {
-                radiusValue += ` ${borderRadiusSize}`
+                radiusValue += " 10px"
             } else {
                 radiusValue += " 0px"
             }
             if (row<world.length-1 && col>0 && world[row+1][col]!=2 && world[row+1][col-1]!=2 && world[row][col-1]!=2) {
-                radiusValue += ` ${borderRadiusSize}`
+                radiusValue += " 10px"
             } else {
                 radiusValue += " 0px"
             }
@@ -195,8 +177,8 @@
             }
         }
         function pacmanWorldPos() {
-            var row = Math.floor(gameState.pacmanY / blockSize);
-            var col = Math.floor(gameState.pacmanX / blockSize);
+            var row = Math.floor(gameState.pacmanY / 50);
+            var col = Math.floor(gameState.pacmanX / 50);
             return { row: row, col: col };
         }
         function pacmanRelativeBlock(rowOffset, colOffset) {
@@ -212,7 +194,7 @@
                 case 'left':
                 case 'right':
                     if (['up','down'].includes(gameState.pacmanDirection)) {
-                        if (gameState.pacmanX % blockSize == 0) {
+                        if (gameState.pacmanX % 50 == 0) {
                             gameState.pacmanLastDirection = gameState.pacmanDirection;
                         }
                     } else {
@@ -222,7 +204,7 @@
                 case 'up':
                 case 'down':
                     if (['left','right'].includes(gameState.pacmanDirection)) {
-                        if (gameState.pacmanY % blockSize == 0){
+                        if (gameState.pacmanY % 50 == 0){
                             gameState.pacmanLastDirection = gameState.pacmanDirection;
                         }
                     } else {
@@ -235,46 +217,46 @@
             switch (gameState.pacmanLastDirection) {
                 case 'left':
                     if (gameState.pacmanX > 0) {
-                        if (gameState.pacmanX % blockSize == 0 && pacmanRelativeBlock(0,-1) == 2) {
+                        if (gameState.pacmanX % 50 == 0 && pacmanRelativeBlock(0,-1) == 2) {
                             break;
                         }
-                        gameState.pacmanX -= blockStepSize;
+                        gameState.pacmanX -= 10;
                     }
                     document.getElementById("pacman").style.transform = "rotate(180deg)";
                     break;
                 case 'right':
-                    if (gameState.pacmanX < (world[0].length-1)*blockSize) {
-                        if (gameState.pacmanX % blockSize == 0 && pacmanRelativeBlock(0,1) == 2) {
+                    if (gameState.pacmanX < (world[0].length-1)*50) {
+                        if (gameState.pacmanX % 50 == 0 && pacmanRelativeBlock(0,1) == 2) {
                             break;
                         }
-                        gameState.pacmanX += blockStepSize;
+                        gameState.pacmanX += 10;
                     }
                     document.getElementById("pacman").style.transform = "rotate(0deg)";
                     break;
                 case 'up':
                     if (gameState.pacmanY > 0) {
-                        if (gameState.pacmanY % blockSize == 0 && pacmanRelativeBlock(-1,0) == 2) {
+                        if (gameState.pacmanY % 50 == 0 && pacmanRelativeBlock(-1,0) == 2) {
                             break;
                         }
-                        gameState.pacmanY -= blockStepSize;
+                        gameState.pacmanY -= 10;
                     }
                     document.getElementById("pacman").style.transform = "rotate(-90deg)";
                     break;
                 case 'down':
-                    if (gameState.pacmanY < (world.length-1)*blockSize) {
-                        if (gameState.pacmanY % blockSize == 0 && pacmanRelativeBlock(1,0) == 2) {
+                    if (gameState.pacmanY < (world.length-1)*50) {
+                        if (gameState.pacmanY % 50 == 0 && pacmanRelativeBlock(1,0) == 2) {
                             break;
                         }
-                        gameState.pacmanY += blockStepSize;
+                        gameState.pacmanY += 10;
                     }
                     document.getElementById("pacman").style.transform = "rotate(90deg)";
                     break;
             }
-            if (gameState.pacmanX % blockSize == 0 && gameState.pacmanY % blockSize == 0) {
+            if (gameState.pacmanX % 50 == 0 && gameState.pacmanY % 50 == 0) {
                 eatDot();
             }
-            document.getElementById("pacman").style.left = gameState.pacmanX/10+"em";
-            document.getElementById("pacman").style.top = gameState.pacmanY/10+"em";
+            document.getElementById("pacman").style.left = gameState.pacmanX+"px";
+            document.getElementById("pacman").style.top = gameState.pacmanY+"px";
             
         }
 
