@@ -36,3 +36,6 @@ def handle_post(request):
 
 def times_table(request):
     return render(request, 'super_times_table.html')
+
+def pacman(request):
+    return render(request, 'pacman.html')    

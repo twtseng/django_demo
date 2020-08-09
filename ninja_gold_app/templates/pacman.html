@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacman demo</title>
+    <style type="text/css">
+        * {
+            padding:0;
+            margin:0;
+        }
+        body {
+            background-color: black;
+        }
+        div.row {
+            display: flex;
+        }
+        div.row div {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+        }
+        div.brick {
+            background-color: teal;
+            width: 40px;
+            height: 40px;
+        }
+        div.coin {
+            background-image: url("{% static 'images/coin.png' %}");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 10px 10px;
+        }
+        div#pacman {
+            width: 50px;
+            height: 50px;
+            background-image: url("{% static 'images/pacman.gif' %}");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            z-index: 3;
+            position: absolute;
+        }
+        div.empty {
+            background-color: transparent;
+        }
+  
+        .container {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Coby's Website</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Times Table</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/gold">Gold</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pacman">Pac Man</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="world">
+        </div>
+        <div id="pacman" style="top: 0px; "></div>
+        <div class="brick2"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script>
+        var world = [
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+            [2,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,2],
+            [2,1,2,2,1,2,2,1,2,1,2,2,1,2,2,1,2],
+            [2,1,2,1,1,1,1,1,2,1,1,1,1,1,2,1,2],
+            [2,1,2,1,2,1,2,2,2,2,2,1,2,1,2,1,2],
+            [2,1,2,1,2,1,1,1,1,1,1,1,2,1,2,1,2],
+            [2,1,1,1,2,1,2,2,2,2,2,1,2,1,1,1,2],
+            [2,1,2,1,2,1,2,2,2,2,2,1,2,1,2,1,2],
+            [2,1,2,1,2,1,1,0,0,0,0,1,2,1,2,1,2],
+            [2,1,2,1,2,2,2,2,1,2,2,2,2,1,2,1,2],
+            [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+            [2,1,2,1,2,2,2,1,2,1,2,2,2,1,2,1,2],
+            [2,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,2],
+            [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+        ];
+        var blockIdToName = {
+            0 : "empty",
+            1 : "coin",
+            2 : "brick"
+        }
+        var gameState = {
+            pacmanX : 400,
+            pacmanY : 500,
+            pacmanDirection : 'right',
+            pacmanLastDirection : 'right'
+        }
+
+        function borderRadius(row, col) {
+            var radiusValue = "border-radius:";
+            if (row>0 && col>0 && world[row][col-1]!=2 && world[row-1][col-1]!=2 && world[row-1][col]!=2) {
+                radiusValue += " 10px"
+            } else {
+                radiusValue += " 0px"
+            }
+            if (row>0 && col<world[0].length-1 && world[row-1][col]!=2 && world[row-1][col+1]!=2 && world[row][col+1]!=2) {
+                radiusValue += " 10px"
+            } else {
+                radiusValue += " 0px"
+            }
+            if (row<world.length-1 && col<world[0].length-1 && world[row][col+1]!=2 && world[row+1][col+1]!=2 && world[row+1][col]!=2) {
+                radiusValue += " 10px"
+            } else {
+                radiusValue += " 0px"
+            }
+            if (row<world.length-1 && col>0 && world[row+1][col]!=2 && world[row+1][col-1]!=2 && world[row][col-1]!=2) {
+                radiusValue += " 10px"
+            } else {
+                radiusValue += " 0px"
+            }
+            return radiusValue;
+        }
+        function displayWorld() {
+            var output='';
+            for(var i=0; i < world.length; ++i) {
+                output += "<div class='row'>"
+                for (var j=0; j < world[i].length; ++j) {
+                    output += `<div class="${blockIdToName[world[i][j]]}" style="${borderRadius(i,j)}" id="block_${i}_${j}"></div>`;
+                }
+                output += "</div>"
+            }
+            document.getElementById("world").innerHTML=output;
+        }
+        displayWorld();
+        document.onkeydown = onKeyPress;
+        function onKeyPress(e) {
+            switch(e.keyCode) {
+                case 38: //up
+                    gameState.pacmanDirection = 'up';
+                    break;
+                case 39: //right
+                    gameState.pacmanDirection = 'right';
+                    break;
+                case 40: //down
+                    gameState.pacmanDirection = 'down';
+                    break;
+                case 37: //left
+                    gameState.pacmanDirection = 'left';
+                    break;
+            }
+        }
+        function pacmanWorldPos() {
+            var row = Math.floor(gameState.pacmanY / 50);
+            var col = Math.floor(gameState.pacmanX / 50);
+            return { row: row, col: col };
+        }
+        function pacmanRelativeBlock(rowOffset, colOffset) {
+            return world[pacmanWorldPos().row + rowOffset][pacmanWorldPos().col + colOffset];
+        }
+        function eatDot() {
+            world[pacmanWorldPos().row][pacmanWorldPos().col] = 0;
+            var id = "block_"+pacmanWorldPos().row+"_"+pacmanWorldPos().col;
+            document.getElementById(id).className = "empty";
+        }
+        function movePacman() {
+            switch (gameState.pacmanLastDirection) {
+                case 'left':
+                case 'right':
+                    if (['up','down'].includes(gameState.pacmanDirection)) {
+                        if (gameState.pacmanX % 50 == 0) {
+                            gameState.pacmanLastDirection = gameState.pacmanDirection;
+                        }
+                    } else {
+                        gameState.pacmanLastDirection = gameState.pacmanDirection;
+                    }
+                    break;
+                case 'up':
+                case 'down':
+                    if (['left','right'].includes(gameState.pacmanDirection)) {
+                        if (gameState.pacmanY % 50 == 0){
+                            gameState.pacmanLastDirection = gameState.pacmanDirection;
+                        }
+                    } else {
+                        gameState.pacmanLastDirection = gameState.pacmanDirection;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            switch (gameState.pacmanLastDirection) {
+                case 'left':
+                    if (gameState.pacmanX > 0) {
+                        if (gameState.pacmanX % 50 == 0 && pacmanRelativeBlock(0,-1) == 2) {
+                            break;
+                        }
+                        gameState.pacmanX -= 10;
+                    }
+                    document.getElementById("pacman").style.transform = "rotate(180deg)";
+                    break;
+                case 'right':
+                    if (gameState.pacmanX < (world[0].length-1)*50) {
+                        if (gameState.pacmanX % 50 == 0 && pacmanRelativeBlock(0,1) == 2) {
+                            break;
+                        }
+                        gameState.pacmanX += 10;
+                    }
+                    document.getElementById("pacman").style.transform = "rotate(0deg)";
+                    break;
+                case 'up':
+                    if (gameState.pacmanY > 0) {
+                        if (gameState.pacmanY % 50 == 0 && pacmanRelativeBlock(-1,0) == 2) {
+                            break;
+                        }
+                        gameState.pacmanY -= 10;
+                    }
+                    document.getElementById("pacman").style.transform = "rotate(-90deg)";
+                    break;
+                case 'down':
+                    if (gameState.pacmanY < (world.length-1)*50) {
+                        if (gameState.pacmanY % 50 == 0 && pacmanRelativeBlock(1,0) == 2) {
+                            break;
+                        }
+                        gameState.pacmanY += 10;
+                    }
+                    document.getElementById("pacman").style.transform = "rotate(90deg)";
+                    break;
+            }
+            if (gameState.pacmanX % 50 == 0 && gameState.pacmanY % 50 == 0) {
+                eatDot();
+            }
+            document.getElementById("pacman").style.left = gameState.pacmanX+"px";
+            document.getElementById("pacman").style.top = gameState.pacmanY+"px";
+            
+        }
+
+        setInterval(movePacman, 50);
+    </script>
+</body>
+
+</html>
