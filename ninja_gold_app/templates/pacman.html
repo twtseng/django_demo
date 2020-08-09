@@ -248,8 +248,12 @@
             switch (gameState.pacmanLastDirection) {
                 case 'left':
                 case 'right':
-                    if (['up','down'].includes(gameState.pacmanDirection)) {
-                        if (gameState.pacmanX % blockSize == 0) {
+                    if (['up'].includes(gameState.pacmanDirection)) {
+                        if (gameState.pacmanX % blockSize == 0 && pacmanRelativeBlock(-1,0) != 2) {
+                            gameState.pacmanLastDirection = gameState.pacmanDirection;
+                        }
+                    } else if (['down'].includes(gameState.pacmanDirection)) {
+                        if (gameState.pacmanX % blockSize == 0 && pacmanRelativeBlock(1,0) != 2) {
                             gameState.pacmanLastDirection = gameState.pacmanDirection;
                         }
                     } else {
@@ -258,8 +262,12 @@
                     break;
                 case 'up':
                 case 'down':
-                    if (['left','right'].includes(gameState.pacmanDirection)) {
-                        if (gameState.pacmanY % blockSize == 0){
+                    if (['left'].includes(gameState.pacmanDirection)) {
+                        if (gameState.pacmanY % blockSize == 0 && pacmanRelativeBlock(0,-1) != 2){
+                            gameState.pacmanLastDirection = gameState.pacmanDirection;
+                        }
+                    } else if (['right'].includes(gameState.pacmanDirection)) {
+                        if (gameState.pacmanY % blockSize == 0 && pacmanRelativeBlock(0,1) != 2){
                             gameState.pacmanLastDirection = gameState.pacmanDirection;
                         }
                     } else {
