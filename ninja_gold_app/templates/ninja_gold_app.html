@@ -14,26 +14,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Coby's Website</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Times Table</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/gold">Gold</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/pacman">Pac Man</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    {% include "header.html" %}
     <div class="container">
         <div class="card border-success mb-3" style='max-width:15em'>
             <div class="card-header text-center">Your Gold on Azure</div>
@@ -41,7 +22,7 @@
                 <h5 class="card-title">{{ request.session.gold_count }}</h5>
             </div>
             <div class="card-footer d-flex justify-content-center">
-                <form action="/post" method="POST">
+                <form action="/gold/post" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="action" value="reset">
                     <input type="submit" value="Reset Game">
@@ -56,7 +37,7 @@
                         <p class="card-text">Earns 10-20 golds</p>
                     </div>
                     <div class="card-footer d-flex justify-content-center">
-                        <form action="/post" method="POST">
+                        <form action="/gold/post" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="farm">
                             <input type="submit" value="Find Gold!">
@@ -69,7 +50,7 @@
                         <p class="card-text">Earns 5-10 golds</p>
                     </div>
                     <div class="card-footer d-flex justify-content-center">
-                        <form action="/post" method="POST">
+                        <form action="/gold/post" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="cave">
                             <input type="submit" value="Find Gold!">
@@ -82,7 +63,7 @@
                         <p class="card-text">Earns 2-5 golds</p>
                     </div>
                     <div class="card-footer d-flex justify-content-center">
-                        <form action="/post" method="POST">
+                        <form action="/gold/post" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="house">
                             <input type="submit" value="Find Gold!">
@@ -95,7 +76,7 @@
                         <p class="card-text">Earns/Takes 0-50 golds</p>
                     </div>
                     <div class="card-footer d-flex justify-content-center">
-                        <form action="/post" method="POST">
+                        <form action="/gold/post" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="casino">
                             <input type="submit" value="Find Gold!">

@@ -10,7 +10,7 @@ def init_session_variables(request, force = False):
 # Create your views here.
 def default_view(request):
     init_session_variables(request)
-    return render(request, 'index.html')
+    return render(request, 'ninja_gold_app.html')
 
 def add_gold(request, item_name, min_golds, max_golds):
     gold_count = random.randint(min_golds, max_golds)
@@ -33,9 +33,3 @@ def handle_post(request):
     elif action == "casino":
         add_gold(request,"casino", -50, 50)
     return redirect("/gold")
-
-def times_table(request):
-    return render(request, 'super_times_table.html')
-
-def pacman(request):
-    return render(request, 'pacman.html')    
