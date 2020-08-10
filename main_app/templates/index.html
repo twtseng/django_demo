@@ -14,31 +14,35 @@
 </head>
 
 <body>
+    {% load static %}
     {% include "header.html" %}
     <div class="container">
-        <div class="jumbotron text-center">
+        <div class="jumbotron text-center bg-secondary">
             <h1>Pick a game!</h1>
             <div class="d-flex justify-content-between">
                 <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{% static 'images/timestable.jpg' %}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Times Table</h5>
                         <p class="card-text">Practice your multiplication</p>
-                        <a href="/timestable" class="card-link">Play</a>
+                        <a href="/timestable" class="btn btn-primary">Play</a>
                     </div>
                 </div>
                 <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{% static 'images/gold.jpg' %}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Ninja Gold</h5>
-                        <p class="card-text">Lame counting game</p>
-                        <a href="/gold" class="card-link">Play</a>
+                        <p class="card-text">Play a lame counting game</p>
+                        <a href="/gold" class="btn btn-primary">Play</a>
                     </div>
                 </div>
                 <div class="card" style="width: 18rem;">
+                    <img class="card-img-top bg-primary" src="{% static 'images/pacman.gif' %}" alt="Card image cap">
                     <div class="card-body">
+                        
                         <h5 class="card-title">PacMan</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                        <p class="card-text">Practice your multiplication</p>
-                        <a href="/pacman" class="card-link">Play</a>
+                        <p class="card-text">Play a lame version of PacMan!</p>
+                        <a href="/pacman" class="btn btn-primary">Play</a>
                     </div>
                 </div>
             </div>
