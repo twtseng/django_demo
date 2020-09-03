@@ -187,10 +187,8 @@
                 Draw something by tapping or dragging.<br/><br/>
                 Works on iOS, Android and desktop/laptop touchscreens using Chrome/Firefox/Safari.<br/><br/>
                 <input type="submit" value="Clear Sketchpad" id="clearbutton" onclick="clearCanvas(canvas,ctx);">
-                <h1>Right!</h1>
-                <img src="{% static 'images/hand_fingers.jpg' %}" alt="Hand Fingers" width="100%" >
-                <h1>Wrong!</h1>
-                <img src="{% static 'images/hand_closed.jpg' %}" alt="Hand Closed" width="100%" >
+                <input type="image" id="image" src="{% static 'images/hand_fingers.jpg' %}" alt="Hand Fingers" width="100%" >
+                <input type="image" id="image" src="{% static 'images/hand_closed.jpg' %}" alt="Hand Closed" width="100%" >
                 
             </div>
             <div class="rightside">
