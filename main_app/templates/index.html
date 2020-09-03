@@ -19,9 +19,43 @@
 </head>
 
 <body>
+    
+<script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '2673302802911758',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v5.0'
+      });
+        
+      FB.AppEvents.logPageView();   
+        
+    };
+  
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+     
+    function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+    });
+    }
+  </script>
+
     {% load static %}
     {% include "header.html" %}
     <div class="container">
+        
+    <fb:login-button 
+    scope="public_profile,email"
+    onlogin="checkLoginState();">
+    </fb:login-button>
         <div class="jumbotron text-center bg-secondary">
             <div class="jumbotron bg-primary text-light">
                 <h1>Welcome to Coby's SUPER-DUPER website!!!</h1>

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'main_app',
     'ninja_gold_app',
+    'pencil_practice',
     'pacman_app',
     'timestable_app',
     'django.contrib.admin',
